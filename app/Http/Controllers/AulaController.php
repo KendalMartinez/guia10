@@ -3,23 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Curso; 
+use App\Models\Aula; 
 
-
-class CursoController extends Controller
+class AulaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-    $busqueda = $request->input('buscar');
+           $busqueda = $request->input('buscar');
     
-    $cursos = Curso::when($busqueda, function ($query, $busqueda) {
+    $aulas = Aula::when($busqueda, function ($query, $busqueda) {
         return $query->where('nombre', 'like', "%$busqueda%");
     })->get();
 
-    return view('cursos.index', compact('cursos', 'busqueda'));
+    return view('aulas.index', compact('aulas', 'busqueda'));
     }
 
     /**
@@ -27,7 +26,7 @@ class CursoController extends Controller
      */
     public function create()
     {
-            return view('cursos.create'); 
+         return view('aulas.create'); 
     }
 
     /**
@@ -35,13 +34,13 @@ class CursoController extends Controller
      */
     public function store(Request $request)
     {
-            $request->validate([ 
+          $request->validate([ 
         'nombre' => 'required', 
-        'duracion' => 'required|integer', 
+        'capacidad' => 'required|integer', 
             ]); 
  
-    Curso::create($request->all()); 
-    return redirect()->route('cursos.index'); 
+    Aula::create($request->all()); 
+    return redirect()->route('aulas.index'); 
     }
 
     /**
@@ -49,8 +48,8 @@ class CursoController extends Controller
      */
     public function show(string $id)
     {
-        $curso = Curso::findOrFail($id);
-        return view('cursos.show', compact('curso'));
+         $aula = Aula::findOrFail($id);
+        return view('aulas.show', compact('aula'));
     }
 
     /**
@@ -58,8 +57,8 @@ class CursoController extends Controller
      */
     public function edit(string $id)
     {
-        $curso = Curso::findOrFail($id);
-        return view('cursos.edit', compact('curso'));
+        $aula = Aula::findOrFail($id);
+        return view('aulas.edit', compact('aula'));
     }
 
     /**
@@ -69,13 +68,13 @@ class CursoController extends Controller
     {
         $request->validate([
             'nombre' => 'required',
-            'duracion' => 'required|integer',
+            'capacidad' => 'required|integer',
         ]);
 
-        $curso = Curso::findOrFail($id);
-        $curso->update($request->all());
+        $aula = Aula::findOrFail($id);
+        $aula->update($request->all());
 
-        return redirect()->route('cursos.index');
+        return redirect()->route('aulas.index');
     }
 
     /**
@@ -83,8 +82,8 @@ class CursoController extends Controller
      */
     public function destroy(string $id)
     {
-        $curso = Curso::findOrFail($id);
-        $curso->delete();
-        return redirect()->route('cursos.index');
+        $aula = Aula::findOrFail($id);
+        $aula->delete();
+        return redirect()->route('aulas.index');
     }
 }
