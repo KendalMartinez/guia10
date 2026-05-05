@@ -11,10 +11,15 @@ class CursoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-          $cursos = Curso::all(); 
-    return view('cursos.index', compact('cursos'));
+            $busqueda = $request->input('buscar');
+    
+    $cursos = Curso::when($busqueda, function ($query, $busqueda) {
+        return $query->where('nombre', 'like', "%$busqueda%");
+    })->get();
+
+    return view('cursos.index', compact('cursos', 'busqueda'));
     }
 
     /**
@@ -44,7 +49,8 @@ class CursoController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $curso = Curso::findOrFail($id);
+        return view('cursos.show', compact('curso'));
     }
 
     /**
@@ -52,7 +58,8 @@ class CursoController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $curso = Curso::findOrFail($id);
+        return view('cursos.edit', compact('curso'));
     }
 
     /**
@@ -60,7 +67,15 @@ class CursoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'nombre' => 'required',
+            'duracion' => 'required|integer',
+        ]);
+
+        $curso = Curso::findOrFail($id);
+        $curso->update($request->all());
+
+        return redirect()->route('cursos.index');
     }
 
     /**
@@ -68,6 +83,8 @@ class CursoController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $curso = Curso::findOrFail($id);
+        $curso->delete();
+        return redirect()->route('cursos.index');
     }
 }

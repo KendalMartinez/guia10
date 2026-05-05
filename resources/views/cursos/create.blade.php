@@ -1,37 +1,61 @@
-<!DOCTYPE html> 
-<html lang="es"> 
-<head> 
-    <meta charset="UTF-8"> 
-    <title>Crear Curso</title>
-    </head> 
-<body> 
-    <h1>Crear Nuevo Curso</h1> 
- 
-    {{-- Mostrar errores de validación --}} 
-    @if ($errors->any()) 
-        <div style="color: red;"> 
-            <ul> 
-                @foreach ($errors->all() as $error) 
-                    <li>{{ $error }}</li> 
-                @endforeach 
-            </ul> 
-        </div> 
-    @endif 
- 
-    <form action="{{ route('cursos.store') }}" method="POST"> 
-        @csrf 
- 
-        <label for="nombre">Nombre del Curso:</label><br> 
-        <input type="text" id="nombre" name="nombre" value="{{ old('nombre') }}"><br><br> 
- 
-        <label for="duracion">Duración (en horas):</label><br> 
-        <input type="number" id="duracion" name="duracion" value="{{ old('duracion') 
-}}"><br><br> 
- 
-        <button type="submit">Guardar Curso</button> 
-    </form> 
- 
-    <br> 
-    <a href="{{ route('cursos.index') }}">Volver a la lista de cursos</a> 
-</body> 
-</html>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+<div class="container mt-5">
+
+    <div class="card shadow p-4">
+        <h2 class="text-center mb-4">Crear Nuevo Curso</h2> 
+
+        {{-- Mostrar errores de validación --}}
+        @if ($errors->any()) 
+            <div class="alert alert-danger">
+                <ul class="mb-0"> 
+                    @foreach ($errors->all() as $error) 
+                        <li>{{ $error }}</li> 
+                    @endforeach 
+                </ul> 
+            </div>
+        @endif 
+
+        <form action="{{ route('cursos.store') }}" method="POST"> 
+            @csrf 
+
+            <!-- Nombre -->
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre del Curso</label> 
+                <input type="text" 
+                       id="nombre" 
+                       name="nombre" 
+                       class="form-control"
+                       value="{{ old('nombre') }}"
+                       placeholder="Ej: Programación Web">
+            </div>
+
+            <!-- Duración -->
+            <div class="mb-3">
+                <label for="duracion" class="form-label">Duración (horas)</label> 
+                <input type="number" 
+                       id="duracion" 
+                       name="duracion" 
+                       class="form-control"
+                       value="{{ old('duracion') }}"
+                       placeholder="Ej: 40">
+            </div>
+
+            <!-- Botones -->
+            <div class="d-flex justify-content-between">
+                <a href="{{ route('cursos.index') }}" class="btn btn-secondary">
+                    Volver
+                </a>
+
+                <button type="submit" class="btn btn-success">
+                    Guardar Curso
+                </button>
+            </div>
+
+        </form> 
+
+    </div>
+
+</div>
