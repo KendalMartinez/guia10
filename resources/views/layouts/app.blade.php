@@ -41,7 +41,8 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link px-3 rounded" href="{{ route('aulas.index') }}">
+                       <a class="nav-link px-3 rounded {{ request()->routeIs('aulas.*') ? 'active bg-white text-dark' : '' }}"
+                    href="{{ route('aulas.index') }}">
                         🏫 Aulas
                     </a>
                 </li>
@@ -57,9 +58,7 @@
 <!-- ================= CONTENIDO ================= -->
 <main class="flex-grow-1 container py-5">
 
-    <div class="bg-white p-4 rounded shadow-sm">
         @yield('content')
-    </div>
 
 </main>
 
