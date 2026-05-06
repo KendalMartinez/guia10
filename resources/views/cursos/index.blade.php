@@ -9,7 +9,7 @@
 
         <div class="d-flex justify-content-between align-items-center mb-3">
 
-            <!-- Buscador (izquierda) -->
+            <!-- Buscador -->
             <form method="GET" action="{{ route('cursos.index') }}" class="d-flex">
                 <div class="input-group">
                     <input type="text"
@@ -28,7 +28,7 @@
                 </div>
             </form>
 
-            <!-- Botón crear (derecha) -->
+            <!-- Crear -->
             <a href="{{ route('cursos.create') }}" class="btn btn-success ms-3">
                 + Crear nuevo curso
             </a>
@@ -43,7 +43,8 @@
                     <tr>
                         <th>ID</th>
                         <th>Nombre</th>
-                        <th>Duración (horas)</th>
+                        <th>Duración</th>
+                        <th>Aulas</th> <!-- 🔥 relación -->
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -53,10 +54,23 @@
                     <tr>
                         <td>{{ $curso->id }}</td>
                         <td>{{ $curso->nombre }}</td>
-                        <td>{{ $curso->duracion }}</td>
+                        <td>{{ $curso->duracion }} hrs</td>
+
+                        <!-- 🔥 Mostrar aulas -->
+                        <td>
+                            @if($curso->aulas->isEmpty())
+                                <span class="text-muted">Sin aulas</span>
+                            @else
+                                @foreach($curso->aulas as $aula)
+                                    <span class="badge bg-success">
+                                        {{ $aula->nombre }}
+                                    </span>
+                                @endforeach
+                            @endif
+                        </td>
 
                         <td>
-                            <!-- Ver detalle -->
+                            <!-- Ver -->
                             <a href="{{ route('cursos.show', $curso->id) }}"
                                 class="btn btn-info btn-sm">
                                 Ver más
@@ -81,14 +95,12 @@
                                     Eliminar
                                 </button>
                             </form>
-
-
                         </td>
-                        
+
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="4">No hay cursos registrados</td>
+                        <td colspan="5">No hay cursos registrados</td>
                     </tr>
                     @endforelse
                 </tbody>

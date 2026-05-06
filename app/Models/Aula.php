@@ -10,4 +10,9 @@ class Aula extends Model
         'nombre', 
         'capacidad', 
     ]; 
+
+    public function cursos()
+{
+    return $this->belongsToMany(Curso::class);
+}
 }

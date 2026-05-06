@@ -9,7 +9,7 @@
 
         <div class="d-flex justify-content-between align-items-center mb-3">
 
-            <!-- Buscador (izquierda) -->
+            <!-- Buscador -->
             <form method="GET" action="{{ route('aulas.index') }}" class="d-flex">
                 <div class="input-group">
                     <input type="text"
@@ -28,7 +28,7 @@
                 </div>
             </form>
 
-            <!-- Botón crear (derecha) -->
+            <!-- Crear -->
             <a href="{{ route('aulas.create') }}" class="btn btn-success ms-3">
                 + Crear nueva aula
             </a>
@@ -44,6 +44,7 @@
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Capacidad</th>
+                        <th>Cursos</th> <!-- 🔥 NUEVO -->
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -55,20 +56,30 @@
                         <td>{{ $aula->nombre }}</td>
                         <td>{{ $aula->capacidad }}</td>
 
+                        <!-- 🔥 Mostrar cursos -->
                         <td>
-                            <!-- Ver detalle -->
+                            @if($aula->cursos->isEmpty())
+                                <span class="text-muted">Sin cursos</span>
+                            @else
+                                @foreach($aula->cursos as $curso)
+                                    <span class="badge bg-primary">
+                                        {{ $curso->nombre }}
+                                    </span>
+                                @endforeach
+                            @endif
+                        </td>
+
+                        <td>
                             <a href="{{ route('aulas.show', $aula->id) }}"
                                 class="btn btn-info btn-sm">
                                 Ver más
                             </a>
 
-                            <!-- Editar -->
                             <a href="{{ route('aulas.edit', $aula->id) }}"
                                 class="btn btn-warning btn-sm">
                                 Editar
                             </a>
 
-                            <!-- Eliminar -->
                             <form action="{{ route('aulas.destroy', $aula->id) }}"
                                 method="POST"
                                 style="display:inline;">
@@ -81,14 +92,12 @@
                                     Eliminar
                                 </button>
                             </form>
-
-
                         </td>
-                        
+
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="4">No hay aulas registradas</td>
+                        <td colspan="5">No hay aulas registradas</td>
                     </tr>
                     @endforelse
                 </tbody>
